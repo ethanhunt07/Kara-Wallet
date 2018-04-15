@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 
 import styles from './style.scss';
 
+import { NUMBER_OF_STEPS, ALL_STEPS } from './Steps';
+
 type Props = {
   modalOpen: PropTypes.bool.isRequired,
   modalToggle: PropTypes.func.isRequired,
@@ -18,10 +20,50 @@ class RegistrationModal extends Component {
     super(props);
     this.state = {
       // modalOpen: false
+      currentStep: 0,
     };
+
+    this.backToPrevStep = this.backToPrevStep.bind(this);
+    this.proceedToNextStep = this.proceedToNextStep.bind(this);
+  }
+
+  backToPrevStep(evt) {
+    evt.preventDefault();
+    const { currentStep } = this.state;
+    const targetStep = currentStep >= 1 ? currentStep - 1 : 0;
+    console.log(targetStep);
+    this.setState({ currentStep: targetStep });
+  }
+
+  proceedToNextStep(evt) {
+    evt.preventDefault();
+    const { currentStep } = this.state;
+    const targetStep = currentStep <= NUMBER_OF_STEPS - 2 ? currentStep + 1 : NUMBER_OF_STEPS - 1;
+    this.setState({ currentStep: targetStep });
+  }
+
+  completeAccountCreation(evt) {
+    evt.preventDefault();
+    const { currentStep } = this.state;
+    if (currentStep !== NUMBER_OF_STEPS - 1) {
+      console.error(new Error('Steps still left to complete'));
+      return false;
+    }
   }
 
   render() {
+    const { currentStep } = this.state;
+
+    const { backToPrevStep, proceedToNextStep } = this;
+    const { modalCloseFunc } = this.props;
+
+    const BackButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={backToPrevStep}>Back</Button>;
+    const CancelButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={modalCloseFunc}>Cancel</Button>;
+
+    const NextButton = () => <Button className={styles['next-button']} variant="raised" onClick={proceedToNextStep}>Next</Button>;
+    const CompleteButton = () => <Button className={styles['complete-button']} variant="raised" onClick={proceedToNextStep}>Complete</Button>;
+
+    const CurrentStepComponent = ALL_STEPS[currentStep].component;
     return (
       <Modal
         isOpen={this.props.modalOpen}
@@ -35,7 +77,7 @@ class RegistrationModal extends Component {
           <Container fluid>
             <Row>
               <Col>
-                <p>
+                {/* <p>
                   Please click Next, then move around your mouse randomly to generate a random
                   passphrase.
                 </p>
@@ -43,15 +85,16 @@ class RegistrationModal extends Component {
                 <p>
                   Note: After the registration is complete, your passphrase will be required for
                   logging in to your account. Please keep it in a safe place.
-                </p>
+                </p> */}
+                <CurrentStepComponent />
               </Col>
             </Row>
           </Container>
 
         </main>
         <footer className={classnames(styles['modal-footer'], 'd-flex justify-content-between')}>
-          <Button className={styles['cancel-button']} variant="raised" onClick={this.props.modalCloseFunc}>Cancel</Button>
-          <Button className={styles['next-button']} variant="raised" onClick={this.toggle}>Do Something</Button>
+          { currentStep === 0 ? <CancelButton /> : <BackButton /> }
+          { currentStep === NUMBER_OF_STEPS - 2 ? <CompleteButton /> : <NextButton /> }
         </footer>
       </Modal>
     );

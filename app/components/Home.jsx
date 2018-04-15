@@ -43,7 +43,11 @@ export default class Home extends Component <Props> {
               <LoginForm modalOpenFunc={this.modalOpenFunc} />
             </Col>
           </Row>
-          <RegistrationModal modalOpen={this.state.modalOpen} modalCloseFunc={this.modalCloseFunc} modalToggle={this.toggleModalState} />
+          <RegistrationModal
+            modalOpen={this.state.modalOpen}
+            modalCloseFunc={this.modalCloseFunc}
+            modalToggle={this.toggleModalState}
+          />
         </Container>
       </div>
     );
