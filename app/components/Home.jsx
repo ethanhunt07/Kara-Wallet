@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 // import { Link } from 'react-router-dom';
-import LoginFrom from './LoginForm';
+import LoginForm from './LoginForm';
 import styles from './Home.css';
 
 import RegistrationModal from '../containers/RegisterModal';
@@ -17,13 +17,19 @@ export default class Home extends Component <Props> {
       modalOpen: false,
     };
     this.toggleModalState = this.toggleModalState.bind(this);
+    this.modalOpenFunc = this.modalOpenFunc.bind(this);
+    this.modalCloseFunc = this.modalCloseFunc.bind(this);
   }
 
-  toggleModalState() {
+  toggleModalState(evt) {
+    evt.preventDefault();
     this.setState({
       modalOpen: !this.modalOpen,
     });
   }
+
+  modalOpenFunc() { this.setState({ modalOpen: true }); }
+  modalCloseFunc() { this.setState({ modalOpen: false }); }
 
   render() {
     return (
@@ -34,10 +40,10 @@ export default class Home extends Component <Props> {
           </header>
           <Row>
             <Col>
-              <LoginFrom modalOpenFunc={() => { this.setState({ modalOpen: true }); }} />
+              <LoginForm modalOpenFunc={this.modalOpenFunc} />
             </Col>
           </Row>
-          <RegistrationModal modalOpen={this.state.modalOpen} modalToggle={this.toggleModalState} />
+          <RegistrationModal modalOpen={this.state.modalOpen} modalCloseFunc={this.modalCloseFunc} modalToggle={this.toggleModalState} />
         </Container>
       </div>
     );

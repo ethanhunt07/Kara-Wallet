@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, Container, Row, Col } from 'reactstrap';
 import Button from 'muicss/lib/react/button';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -32,21 +32,41 @@ class RegistrationModal extends Component {
           <h3>New Account</h3>
         </header>
         <main className={styles['modal-body']}>
-          <p>
-            Please click Next, then move around your mouse randomly to generate a random passphrase.
-          </p>
+          <Container fluid>
+            <Row>
+              <Col>
+                <p>
+                  Please click Next, then move around your mouse randomly to generate a random
+                  passphrase.
+                </p>
 
-          <p>
-            Note: After the registration is complete, your passphrase will be required for logging in to your account. Please keep it in a safe place.
-          </p>
+                <p>
+                  Note: After the registration is complete, your passphrase will be required for
+                  logging in to your account. Please keep it in a safe place.
+                </p>
+              </Col>
+            </Row>
+          </Container>
+
         </main>
-        <footer className={styles['modal-footer']}>
-          <Button variant="raised" onClick={this.toggle}>Do Something</Button>
-          <Button variant="raised" onClick={this.toggle}>Cancel</Button>
+        <footer className={classnames(styles['modal-footer'], 'd-flex justify-content-between')}>
+          <Button className={styles['cancel-button']} variant="raised" onClick={this.props.modalCloseFunc}>Cancel</Button>
+          <Button className={styles['next-button']} variant="raised" onClick={this.toggle}>Do Something</Button>
         </footer>
       </Modal>
     );
   }
 }
+
+RegistrationModal.propTypes = {
+  modalOpen: PropTypes.bool.isRequired,
+  modalToggle: PropTypes.func.isRequired,
+  modalCloseFunc: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
+
+RegistrationModal.defaultProps = {
+  className: '',
+};
 
 export default RegistrationModal;
