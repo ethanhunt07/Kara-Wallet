@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 
 import styles from './style.scss';
 
+import DashboardTabsPanel from '../../containers/DashboardTabsPanel';
+
 const DashboardPanel = ({ children, title }) => (
   <div className={classnames('mui-panel', styles['dashboard-panel'])}>
     <header className={styles['dashboard-panel--header']}>
@@ -25,7 +27,7 @@ DashboardPanel.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default class Dashboard extends Component < Props > {
+export default class Dashboard extends Component < rops> {
   constructor(props) {
     super(props);
     this.state = {};
@@ -73,6 +75,7 @@ export default class Dashboard extends Component < Props > {
               </DashboardPanel>
             </Col>
           </Row>
+          <DashboardTabsPanel />
         </Container>
       </div>
     );
