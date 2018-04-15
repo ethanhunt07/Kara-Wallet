@@ -25,3 +25,26 @@
   background-color: #111 !important;
   color: #fff !important;
 }
+
+.dashboard-panel {
+  min-height: 150px !important;
+}
+
+.dashboard-panel--header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.grey-data-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+  color: #666;
+  font-weight: bold;
+  height: 80px;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
