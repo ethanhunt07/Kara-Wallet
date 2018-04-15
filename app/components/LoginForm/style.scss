@@ -1,0 +1,31 @@
+.new-account-button {
+  background-color: #fff !important;
+  color: #111 !important;
+
+  &:hover {
+    background-color: #222 !important;
+    color: #ddd !important;
+  }
+}
+
+.login-button {
+  background-color: #333 !important;
+  color: #eee !important;
+
+  &:hover {
+    background-color: #111 !important;
+    color: #fff !important;
+  }
+}
+
+.login-form-component {
+  padding-top: 1.5rem !important;
+}
+
+.login-form {
+  min-height: 200px;
+}
+
+.form-buttons {
+  text-align: center;
+}

@@ -1,0 +1,40 @@
+.registration-modal {
+  border-radius: 0.1rem !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  // width: 700px !important;
+  max-width: 900px !important;
+}
+
+.registration-modal > * {
+  border: none !important;
+}
+
+.modal-header {
+  background-color: #111;
+  color: #eee !important;
+  line-height: 2;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.modal-header h3 {
+  color: #eee;
+  letter-spacing: 2px;
+}
+
+.modal-body {
+  padding: 1rem;
+  line-height: 2;
+  color: #333;
+  font-size: 1rem;
+}
+
+.modal-body p {
+  font-size: 1rem;
+}
+
+.modal-footer {
+  padding: 1rem;
+  background-color: #ddd;
+  border-top: 1px solid grey;
+}

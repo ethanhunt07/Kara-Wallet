@@ -5,10 +5,25 @@
   text-align: center;
 }
 
-.container h2 {
-  font-size: 5rem;
-}
-
 .container a {
   font-size: 1.4rem;
+}
+
+.page-container {
+  padding-top: 2rem;
+  background: #eee;
+  /* background: linear-gradient(to right, #dfd6d9 0%, #797b8d 90%); */
+  /* background: linear-gradient(to right, #bdc3c7, #2c3e50); */
+  height: 100vh;
+}
+
+.home-header {
+  margin-bottom: 3rem;
+  line-height: 2.5;
+}
+
+.app-title {
+  font-size: 2.75rem;
+  font-weight: 200;
+  letter-spacing: 1px;
 }
