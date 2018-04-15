@@ -1,0 +1,27 @@
+.page-container {
+  padding-top: 1.25rem;
+  background: #eee;
+  /* background: linear-gradient(to right, #dfd6d9 0%, #797b8d 90%); */
+  /* background: linear-gradient(to right, #bdc3c7, #2c3e50); */
+  height: 100vh;
+}
+
+.dashboard-header {
+  margin-bottom: 3rem;
+  line-height: 2;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 200;
+  letter-spacing: 1px;
+}
+
+.nav-button {
+  height: 60px !important;
+}
+
+.send-button {
+  background-color: #111 !important;
+  color: #fff !important;
+}
