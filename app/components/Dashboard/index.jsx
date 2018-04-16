@@ -27,10 +27,18 @@ DashboardPanel.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default class Dashboard extends Component < rops> {
+export default class Dashboard extends Component <Props> {
   constructor(props) {
     super(props);
+    this.history = this.props.history;
     this.state = {};
+    this.logout = this.logout.bind(this);
+  }
+
+  logout(evt) {
+    evt.preventDefault();
+    this.history.goBack();
+    this.history.push('/');
   }
 
   render() {
@@ -48,7 +56,7 @@ export default class Dashboard extends Component < rops> {
                 Send
               </Button>
               <Button className={styles['nav-button']} variant="raised">Receive Kara</Button>
-              <Button className={styles['nav-button']} variant="raised">Logout</Button>
+              <Button className={styles['nav-button']} variant="raised" onClick={this.logout}>Logout</Button>
             </nav>
           </header>
           <Row>

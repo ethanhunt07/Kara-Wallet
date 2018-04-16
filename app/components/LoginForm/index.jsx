@@ -10,7 +10,7 @@ import styles from './style.scss';
 
 // type Props = {};
 
-const LoginForm = ({ modalOpenFunc }) => (
+const LoginForm = ({ modalOpenFunc, history }) => (
   <div className={classnames('mui-panel', styles['login-form-component'])}>
     <Container>
       <Form
@@ -20,7 +20,7 @@ const LoginForm = ({ modalOpenFunc }) => (
 
         <div className="d-flex justify-content-center">
           <Button className={styles['new-account-button']} variant="raised" onClick={modalOpenFunc}>New Account</Button>
-          <Button className={styles['login-button']} variant="raised">Login</Button>
+          <Button className={styles['login-button']} onClick={() => history.push('/dashboard')} variant="raised">Login</Button>
         </div>
       </Form>
     </Container>
@@ -29,6 +29,12 @@ const LoginForm = ({ modalOpenFunc }) => (
 
 LoginForm.propTypes = {
   modalOpenFunc: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+    go: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default LoginForm;

@@ -32,6 +32,7 @@ export default class Home extends Component <Props> {
   modalCloseFunc() { this.setState({ modalOpen: false }); }
 
   render() {
+    const historyObject = this.props.history;
     return (
       <div className={styles['page-container']}>
         <Container>
@@ -40,7 +41,7 @@ export default class Home extends Component <Props> {
           </header>
           <Row>
             <Col>
-              <LoginForm modalOpenFunc={this.modalOpenFunc} />
+              <LoginForm history={historyObject} modalOpenFunc={this.modalOpenFunc} />
             </Col>
           </Row>
           <RegistrationModal

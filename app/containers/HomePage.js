@@ -8,8 +8,9 @@ export default class HomePage extends Component<Props> {
   props: Props;
 
   render() {
+    const { props } = this;
     return (
-      <Home />
+      <Home {...props} />
     );
   }
 }

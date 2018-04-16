@@ -8,8 +8,9 @@ export default class DashboardPage extends Component<Props> {
   props: Props;
 
   render() {
+    const { props } = this;
     return (
-      <Dashboard />
+      <Dashboard {...props} />
     );
   }
 }
