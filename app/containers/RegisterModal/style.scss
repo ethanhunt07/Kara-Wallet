@@ -54,3 +54,8 @@
     color: #fff !important;
   }
 }
+
+.next-button-disabled, .complete-button-disabled {
+  background-color: #aaa;
+  color: #444;
+}

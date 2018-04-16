@@ -57,13 +57,15 @@ class RegistrationModal extends Component {
     const { backToPrevStep, proceedToNextStep } = this;
     const { modalCloseFunc } = this.props;
 
+    const CurrentStepComponent = ALL_STEPS[currentStep].component;
+    const currentValidate = ALL_STEPS[currentStep].validate;
+
     const BackButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={backToPrevStep}>Back</Button>;
     const CancelButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={modalCloseFunc}>Cancel</Button>;
 
-    const NextButton = () => <Button className={styles['next-button']} variant="raised" onClick={proceedToNextStep}>Next</Button>;
-    const CompleteButton = () => <Button className={styles['complete-button']} variant="raised" onClick={proceedToNextStep}>Complete</Button>;
+    const NextButton = () => <Button className={classnames({ [styles['next-button']]: true, [styles['next-button-disabled']]: !currentValidate() })} variant="raised" onClick={proceedToNextStep}>Next</Button>;
+    const CompleteButton = () => <Button className={classnames({ [styles['complete-button']]: true, [styles['complete-button-disabled']]: !currentValidate() })} variant="raised" onClick={proceedToNextStep}>Complete</Button>;
 
-    const CurrentStepComponent = ALL_STEPS[currentStep].component;
     return (
       <Modal
         isOpen={this.props.modalOpen}

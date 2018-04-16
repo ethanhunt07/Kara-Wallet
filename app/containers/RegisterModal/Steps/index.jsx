@@ -39,12 +39,15 @@ const RedirectStep = () => <Redirect to="/dashboard" />;
 const ALL_STEPS = [
   {
     component: StepOne,
+    validate: () => true,
   },
   {
     component: StepTwo,
+    validate: () => true,
   },
   {
     component: StepThree,
+    validate: () => false,
   },
   {
     component: RedirectStep,
