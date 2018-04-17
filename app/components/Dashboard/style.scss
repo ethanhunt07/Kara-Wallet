@@ -3,7 +3,8 @@
   background: #eee;
   /* background: linear-gradient(to right, #dfd6d9 0%, #797b8d 90%); */
   /* background: linear-gradient(to right, #bdc3c7, #2c3e50); */
-  height: 100vh;
+  min-height: 100vh;
+  padding-bottom: 1.5rem;
 }
 
 .dashboard-header {
@@ -21,9 +22,13 @@
   height: 60px !important;
 }
 
-.send-button {
+.send-button, .toggle-full-node-button {
   background-color: #111 !important;
   color: #fff !important;
+}
+
+.toggle-full-node-button {
+  margin-left: 1rem !important;
 }
 
 .dashboard-panel {
@@ -40,11 +45,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  // align-items: center;
+  padding: 1rem;
   background-color: #ccc;
   color: #666;
   font-weight: bold;
   height: 80px;
   margin-top: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }

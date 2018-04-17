@@ -1,6 +1,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
+import styles from './style.scss';
+
+import GeneratePassPhrase from '../../../utils/generatePassPhrase';
+
 const StepOne = () => (
   <div>
     <p>
@@ -15,20 +19,18 @@ const StepOne = () => (
   </div>
 );
 
+const PassPhraseStep = () => {
+  const passPhrase = GeneratePassPhrase();
+  return (
+    <div>
+      <p>Below is your passphrase:</p>
 
-const StepTwo = () => (
-  <div>
-    <p>
-      Below is your passphrase:
-    </p>
+      <p className={styles['passphrase-panel']}>{ passPhrase }</p>
+    </div>
+  );
+};
 
-    <p>
-      The quick brown fox jumped over the lazy dog.
-    </p>
-  </div>
-);
-
-const StepThree = () => (
+const FinishStep = () => (
   <div>
     <p>Click Next to Proceed once ONLY if you&apos;ve saved your passphrase.</p>
   </div>
@@ -42,15 +44,18 @@ const ALL_STEPS = [
     validate: () => true,
   },
   {
-    component: StepTwo,
-    validate: () => true,
+    component: PassPhraseStep,
+    validate: (containerState) => {
+      return containerState.phraseSaved;
+    },
   },
   {
-    component: StepThree,
+    component: FinishStep,
     validate: () => false,
   },
   {
     component: RedirectStep,
+    validate: () => true,
   },
 ];
 
