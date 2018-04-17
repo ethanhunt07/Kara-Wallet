@@ -32,7 +32,7 @@ function registration(state = initialState, action = {}) {
     case ACCEPT_PASSPHRASE:
       return { ...state, ...{ generatedPhrase: '', phraseAccepted: true } };
     case DELETE_REGISTRATION_BRANCH:
-      return {};
+      return initialState;
     default:
       return state;
   }
