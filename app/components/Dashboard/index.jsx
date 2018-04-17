@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
-import { replace } from 'react-router-redux';
+import { push } from 'react-router-redux';
+import { withRouter } from 'react-router-dom';
 import Button from 'muicss/lib/react/button';
 import Panel from 'muicss/lib/react/panel';
 import classnames from 'classnames';
@@ -31,15 +32,22 @@ DashboardPanel.propTypes = {
   title: PropTypes.string.isRequired
 };
 
-const mapStateToProps = (state) => ({ transactionsList: state.user.transactions });
+const mapStateToProps = (state) => ({
+  transactionsList: state.user.transactions,
+  location: state.router.location
+});
 
 const mapDispatchToProps = (dispatch) => ({
   logout: () => {
-    dispatch(replace('/'));
+    dispatch(push('/'));
   }
 });
 
-const Dashboard = ({ transactionsList, logout }) => (
+// Though not directly used, we are passing location as a property to the component
+// This is done as, when using redux, the app may not detect changes to the location unless
+// The location is passed as a property... and hence the view gets re-rendered (route-change)
+// when the location is changed.
+const Dashboard = ({ transactionsList, logout, location }) => ( // eslint-disable-line 
   <div className={styles['page-container']}>
     <Container>
       <header
@@ -105,9 +113,14 @@ Dashboard.propTypes = {
     fee: PropTypes.number.isRequired,
   })).isRequired,
   logout: PropTypes.func.isRequired,
+  location: PropTypes.shape({
+    hash: PropTypes.string.isRequired,
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired
+  }).isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
 
 // const referenceObject = {
 //   time: referenceTime,

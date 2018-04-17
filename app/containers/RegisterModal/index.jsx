@@ -1,6 +1,8 @@
 import React from 'react';
 import { Modal, Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
+import { replace } from 'react-router-redux';
+import { withRouter } from 'react-router-dom';
 import Button from 'muicss/lib/react/button';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -8,12 +10,12 @@ import PropTypes from 'prop-types';
 import styles from './style.scss';
 
 import { NUMBER_OF_STEPS, ALL_STEPS } from './Steps';
-import { proceedToNextStep, backToPrevStep, closeModal, openModal } from '../../actions/registration';
+import { proceedToNextStep, backToPrevStep, closeModal, toggleModal, generateWallet, deleteRegistrationBranch } from '../../actions/registration';
 
 const RegistrationModal = ({
   currentStep, goForward, goBack,
   closeModalInstance, isModalOpen, toggleModalInstance,
-  registrationState,
+  generateWalletInstance,
 }) => {
   const CurrentStepComponent = ALL_STEPS[currentStep].component;
   const currentValidate = ALL_STEPS[currentStep].validate;
@@ -21,8 +23,8 @@ const RegistrationModal = ({
   const BackButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={goBack}>Back</Button>;
   const CancelButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={closeModalInstance}>Cancel</Button>;
 
-  const NextButton = () => <Button className={classnames({ [styles['next-button']]: true, [styles['next-button-disabled']]: !currentValidate(registrationState) })} variant="raised" onClick={goForward}>Next</Button>;
-  const CompleteButton = () => <Button className={classnames({ [styles['complete-button']]: true, [styles['complete-button-disabled']]: !currentValidate(registrationState) })} variant="raised" onClick={goForward}>Complete</Button>;
+  const NextButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['next-button']]: true, [styles['next-button-disabled']]: !currentValidate() })} variant="raised" onClick={goForward}>Next</Button>;
+  const CompleteButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['complete-button']]: true, [styles['complete-button-disabled']]: !currentValidate() })} variant="raised" onClick={generateWalletInstance}>Complete</Button>;
 
   return (
     <Modal
@@ -54,7 +56,7 @@ const RegistrationModal = ({
       </main>
       <footer className={classnames(styles['modal-footer'], 'd-flex justify-content-between')}>
         { currentStep === 0 ? <CancelButton /> : <BackButton /> }
-        { currentStep === NUMBER_OF_STEPS - 2 ? <CompleteButton /> : <NextButton /> }
+        { currentStep === NUMBER_OF_STEPS - 1 ? <CompleteButton /> : <NextButton /> }
       </footer>
     </Modal>
   );
@@ -67,19 +69,15 @@ RegistrationModal.propTypes = {
   closeModalInstance: PropTypes.func.isRequired,
   toggleModalInstance: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
-  registrationState: PropTypes.shape({
-    currentStep: PropTypes.number.isRequired,
-    modalOpen: PropTypes.bool.isRequired,
-  }).isRequired,
+  generateWalletInstance: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currentStep: state.registration.currentStep,
   isModalOpen: state.registration.modalOpen,
-  registrationState: state.registration
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   goForward: (evt) => {
     evt.preventDefault();
     dispatch(proceedToNextStep());
@@ -94,12 +92,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   toggleModalInstance: (evt) => {
     evt.preventDefault();
-    if (ownProps.modalOpen) {
-      dispatch(closeModal());
-    } else {
-      dispatch(openModal());
-    }
-  }
+    dispatch(toggleModal());
+  },
+  generateWalletInstance: (evt) => {
+    evt.preventDefault();
+    dispatch(generateWallet());
+    dispatch(replace('/dashboard'));
+    dispatch(deleteRegistrationBranch());
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationModal);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RegistrationModal));

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 // import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
 import styles from './Home.css';
@@ -17,10 +18,12 @@ import { openModal } from '../actions/registration';
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  openModalInstance: () => {
+  openModalInstance: (evt) => {
+    evt.preventDefault();
     dispatch(openModal());
   },
-  navigateToDashboard: () => {
+  navigateToDashboard: (evt) => {
+    evt.preventDefault();
     dispatch(push('/dashboard'));
   },
 });
@@ -46,4 +49,4 @@ Home.propTypes = {
   navigateToDashboard: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

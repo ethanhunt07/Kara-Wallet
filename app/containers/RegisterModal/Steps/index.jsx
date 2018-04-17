@@ -1,9 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Button from 'muicss/lib/react/button';
 
 import styles from './style.scss';
 
-import GeneratePassPhrase from '../../../utils/generatePassPhrase';
+import { createPhrase, acceptPhrase } from '../../../actions/registration';
+import getStore from '../../../store/appStore';
+
+const store = getStore();
 
 const StepOne = () => (
   <div>
@@ -19,22 +25,61 @@ const StepOne = () => (
   </div>
 );
 
-const PassPhraseStep = () => {
-  const passPhrase = GeneratePassPhrase();
-  return (
-    <div>
-      <p>Below is your passphrase:</p>
+const mapStateToPropsStepTwo = (state) => ({
+  generatedPhrase: state.registration.generatedPhrase,
+  phraseAccepted: state.registration.phraseAccepted,
+});
 
-      <p className={styles['passphrase-panel']}>{ passPhrase }</p>
-    </div>
-  );
-};
+const mapDispatchToPropsStepTwo = (dispatch) => ({
+  generatePhr: () => {
+    dispatch(createPhrase());
+  },
+  acceptPhr: () => {
+    dispatch(acceptPhrase());
+  }
+});
 
-const FinishStep = () => (
+const PassPhraseStep = ({
+  generatedPhrase, phraseAccepted, generatePhr, acceptPhr
+}) => (
   <div>
-    <p>Click Next to Proceed once ONLY if you&apos;ve saved your passphrase.</p>
+    {
+      !phraseAccepted &&
+      <p>
+        Click to generate passphrase: <Button className={styles['modal-black-button']} onClick={generatePhr} variant="raised">Generate</Button>
+      </p>
+    }
+
+    { generatedPhrase && generatedPhrase.length &&
+      <div>
+        <p className={styles['passphrase-panel']}>
+          { generatedPhrase }
+        </p>
+      </div>}
+
+    { !phraseAccepted &&
+    <div>
+      <p><Button className={styles['modal-black-button']} onClick={acceptPhr} variant="raised">Click</Button> to accept passphrase.</p>
+    </div> }
+
+    { phraseAccepted &&
+    <p>
+      Success! Proceed to complete wallet creation.
+    </p> }
   </div>
 );
+
+PassPhraseStep.propTypes = {
+  generatedPhrase: PropTypes.string.isRequired,
+  phraseAccepted: PropTypes.bool.isRequired,
+  generatePhr: PropTypes.func.isRequired,
+  acceptPhr: PropTypes.func.isRequired,
+};
+
+const ConnectedPhraseStep = connect(
+  mapStateToPropsStepTwo,
+  mapDispatchToPropsStepTwo
+)(PassPhraseStep);
 
 const RedirectStep = () => <Redirect to="/dashboard" />;
 
@@ -44,19 +89,12 @@ const ALL_STEPS = [
     validate: () => true,
   },
   {
-    component: PassPhraseStep,
-    validate: (containerState) => {
-      return containerState.phraseSaved;
+    component: ConnectedPhraseStep,
+    validate: () => {
+      const currentState = store.getState();
+      return currentState.registration.phraseAccepted;
     },
-  },
-  {
-    component: FinishStep,
-    validate: () => false,
-  },
-  {
-    component: RedirectStep,
-    validate: () => true,
-  },
+  }
 ];
 
 const NUMBER_OF_STEPS = ALL_STEPS.length;

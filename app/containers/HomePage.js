@@ -1,10 +1,12 @@
 // @flow
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+
 import Home from '../components/Home';
 
 type Props = {};
 
-export default class HomePage extends Component<Props> {
+class HomePage extends Component<Props> {
   props: Props;
 
   render() {
@@ -14,3 +16,5 @@ export default class HomePage extends Component<Props> {
     );
   }
 }
+
+export default withRouter(HomePage);
