@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'muicss/lib/react/button';
 
@@ -59,14 +60,14 @@ const PassPhraseStep = ({
         </p>
       </div>}
 
-    { !phraseAccepted &&
+    { !phraseAccepted && generatedPhrase.length &&
     <div>
       <p><Button className={styles['modal-black-button']} onClick={acceptPhr} variant="raised">Click</Button> to accept passphrase.</p>
     </div> }
 
     { phraseAccepted &&
     <p>
-      Success! Complete to generate wallet.
+      Please proceed.
     </p> }
   </div>
 );
@@ -78,10 +79,39 @@ PassPhraseStep.propTypes = {
   acceptPhr: PropTypes.func.isRequired,
 };
 
-const ConnectedPhraseStep = connect(
+const ConnectedPhraseStep = withRouter(connect(
   mapStateToPropsStepTwo,
   mapDispatchToPropsStepTwo
-)(PassPhraseStep);
+)(PassPhraseStep));
+
+const mapStateToPropsFinishStep = (state) => ({ acceptedPhrase: state.registration.chosenPhrase });
+
+const mapDispatchToPropsFinishStep = () => ({ });
+
+const ConfirmPhraseAndFinish = ({ acceptedPhrase }) => (
+  <div>
+    <p>
+      Your passphrase is:
+    </p>
+
+    <p className={styles['passphrase-panel']}>
+      { acceptedPhrase }
+    </p>
+
+    <p>
+      Make sure you&apos;ve stored it somewhere safe and proceed to generate your wallet.
+    </p>
+  </div>
+);
+
+ConfirmPhraseAndFinish.propTypes = {
+  acceptedPhrase: PropTypes.string.isRequired,
+};
+
+const ConnectedFinishStep = withRouter(connect(
+  mapStateToPropsFinishStep,
+  mapDispatchToPropsFinishStep
+)(ConfirmPhraseAndFinish));
 
 const ALL_STEPS = [
   {
@@ -95,7 +125,11 @@ const ALL_STEPS = [
       console.log('Current state: ', currentState);
       return currentState.registration.phraseAccepted;
     },
-  }
+  },
+  {
+    component: ConnectedFinishStep,
+    validate: () => true,
+  },
 ];
 
 const NUMBER_OF_STEPS = ALL_STEPS.length;

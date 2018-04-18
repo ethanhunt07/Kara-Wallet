@@ -9,8 +9,11 @@ import PropTypes from 'prop-types';
 
 import styles from './style.scss';
 
+import { GenerateWalletUsingPhrase } from '../../utils/generateWallet';
+
 import { NUMBER_OF_STEPS, ALL_STEPS } from './Steps';
-import { proceedToNextStep, backToPrevStep, closeModal, toggleModal, generateWallet, deleteRegistrationBranch } from '../../actions/registration';
+import { proceedToNextStep, backToPrevStep, closeModal, toggleModal, deleteRegistrationBranch } from '../../actions/registration';
+import { setWallet } from '../../actions/user';
 
 const RegistrationModal = ({
   currentStep, goForward, goBack,
@@ -24,7 +27,7 @@ const RegistrationModal = ({
   const CancelButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={closeModalInstance}>Cancel</Button>;
 
   const NextButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['next-button']]: true })} variant="raised" onClick={goForward}>Next</Button>;
-  const CompleteButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['complete-button']]: true })} variant="raised" onClick={generateWalletInstance}>Complete</Button>;
+  const CompleteButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['complete-button']]: true })} variant="raised" onClick={(evt) => generateWalletInstance(evt, chosenPhrase)}>Complete</Button>;
 
   return (
     <Modal
@@ -69,7 +72,7 @@ const mapStateToProps = (state) => ({
   chosenPhrase: state.registration.chosenPhrase,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   goForward: (evt) => {
     evt.preventDefault();
     dispatch(proceedToNextStep());
@@ -80,17 +83,27 @@ const mapDispatchToProps = (dispatch) => ({
   },
   closeModalInstance: (evt) => {
     evt.preventDefault();
+    if (ownProps.isModalOpen) {
+      dispatch(deleteRegistrationBranch());
+    }
     dispatch(closeModal());
   },
   toggleModalInstance: (evt) => {
     evt.preventDefault();
     dispatch(toggleModal());
   },
-  generateWalletInstance: (evt) => {
+  generateWalletInstance: (evt, chosenPhrase) => {
     evt.preventDefault();
-    dispatch(generateWallet());
+    const newWallet = GenerateWalletUsingPhrase(chosenPhrase);
+    if (!newWallet) {
+      console.error('Wallet creation failed');
+      return false;
+    }
+    const walletString = JSON.stringify(newWallet);
+    localStorage.setItem('walletString', walletString);
+    dispatch(setWallet(walletString));
     dispatch(replace('/dashboard'));
-    dispatch(deleteRegistrationBranch());
+    // dispatch(deleteRegistrationBranch());
   },
 });
 
