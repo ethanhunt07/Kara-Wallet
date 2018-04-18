@@ -36,7 +36,8 @@ DashboardPanel.propTypes = {
 
 const mapStateToProps = (state) => ({
   transactionsList: state.user.transactions,
-  location: state.router.location
+  location: state.router.location,
+  walletAddress: state.user.wallet.address,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -51,7 +52,7 @@ const mapDispatchToProps = (dispatch) => ({
 // This is done as, when using redux, the app may not detect changes to the location unless
 // The location is passed as a property... and hence the view gets re-rendered (route-change)
 // when the location is changed.
-const Dashboard = ({ transactionsList, logout, location }) => ( // eslint-disable-line 
+const Dashboard = ({ transactionsList, logout, location, walletAddress }) => ( // eslint-disable-line 
   <div className={styles['page-container']}>
     <Container>
       <header
@@ -71,7 +72,7 @@ const Dashboard = ({ transactionsList, logout, location }) => ( // eslint-disabl
         <Col>
           <DashboardPanel title="Account Details">
             <div className={styles['grey-data-panel']}>
-              Address:0 xca11123333aa9
+              Address: { walletAddress }
               <br />
               Balance: 50 KRA
             </div>
@@ -121,7 +122,8 @@ Dashboard.propTypes = {
     hash: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
     search: PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  walletAddress: PropTypes.string.isRequired,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

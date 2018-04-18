@@ -53,14 +53,14 @@ const PassPhraseStep = ({
       </p>
     }
 
-    { generatedPhrase && generatedPhrase.length &&
+    { generatedPhrase && !!generatedPhrase.length &&
       <div>
         <p className={styles['passphrase-panel']}>
           { generatedPhrase }
         </p>
       </div>}
 
-    { !phraseAccepted && generatedPhrase.length &&
+    { !phraseAccepted && !!generatedPhrase.length &&
     <div>
       <p><Button className={styles['modal-black-button']} onClick={acceptPhr} variant="raised">Click</Button> to accept passphrase.</p>
     </div> }
