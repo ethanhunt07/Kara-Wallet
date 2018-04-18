@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import { Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 import Root from './containers/Root';
 import { history } from './store/configureStore';
 import getStore from './store/appStore';
@@ -8,11 +10,20 @@ import './app.global.css';
 
 const store = getStore();
 
+const alertOptions = {
+  position: 'bottom center',
+  timeout: 5000,
+  offset: '30px',
+  transition: 'scale'
+};
+
 render(
   <AppContainer>
-    <Root store={store} history={history} />
+    <AlertProvider template={AlertTemplate} {...alertOptions}>
+      <Root store={store} history={history} />
+    </AlertProvider>
   </AppContainer>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 if (module.hot) {
@@ -22,7 +33,7 @@ if (module.hot) {
       <AppContainer>
         <NextRoot store={store} history={history} />
       </AppContainer>,
-      document.getElementById('root')
+      document.getElementById('root'),
     );
   });
 }
