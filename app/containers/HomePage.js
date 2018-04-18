@@ -1,20 +1,21 @@
 // @flow
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
+import { Redirect, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Home from '../components/Home';
 
-type Props = {};
+const HomePage = ({ wallet }) => (wallet.nonExistant ? <Home /> : <Redirect to="/dashboard" />);
 
-class HomePage extends Component<Props> {
-  props: Props;
+HomePage.propTypes = {
+  wallet: PropTypes.shape({
+    nonExistant: PropTypes.bool
+  }).isRequired,
+};
 
-  render() {
-    const { props } = this;
-    return (
-      <Home {...props} />
-    );
-  }
-}
+const mapStateToProps = (state) => ({ wallet: state.user.wallet });
 
-export default withRouter(HomePage);
+const mapDispatchToProps = () => ({ });
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));

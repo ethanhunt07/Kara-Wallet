@@ -5,8 +5,9 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const CREATE_PASSPHRASE = 'CREATE_PASSPHRASE';
 export const ACCEPT_PASSPHRASE = 'ACCEPT_PASSPHRASE';
-export const GENERATE_WALLET = 'GENERATE_WALLET';
 export const DELETE_REGISTRATION_BRANCH = 'DELETE_REGISTRATION_BRANCH';
+export const ADD_WALLET = 'ADD_WALLET';
+export const INVALID_INPUT_ERROR = 'INVALID_INPUT_ERROR';
 
 export function proceedToNextStep() {
   return {
@@ -51,15 +52,22 @@ export function acceptPhrase() {
   };
 }
 
-export function generateWallet() {
+export function addWallet(walletStringified) {
   return {
-    type: GENERATE_WALLET,
+    type: ADD_WALLET,
+    payload: walletStringified,
   };
 }
 
 export function deleteRegistrationBranch() {
   return {
     type: DELETE_REGISTRATION_BRANCH,
+  };
+}
+
+export function generateInvalidInputError() {
+  return {
+    type: INVALID_INPUT_ERROR,
   };
 }
 
@@ -71,6 +79,7 @@ export const actionCreators = {
   toggleModal,
   createPhrase,
   acceptPhrase,
-  generateWallet,
+  addWallet,
   deleteRegistrationBranch,
+  generateInvalidInputError,
 };

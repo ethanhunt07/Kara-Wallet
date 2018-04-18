@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 
 import styles from './style.scss';
 
+import { deleteUserBranch } from '../../actions/user';
+
 // import DashboardTabsPanel from '../../containers/DashboardTabsPanel';
 import DashboardTransactionsTable from '../DashboardTransactionsTable';
 
@@ -39,6 +41,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   logout: () => {
+    dispatch(deleteUserBranch());
+    localStorage.removeItem('walletString');
     dispatch(push('/'));
   }
 });
