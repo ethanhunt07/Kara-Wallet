@@ -38,9 +38,10 @@ export function toggleModal() {
   };
 }
 
-export function createPhrase() {
+export function createPhrase(phrase) {
   return {
     type: CREATE_PASSPHRASE,
+    payload: phrase,
   };
 }
 

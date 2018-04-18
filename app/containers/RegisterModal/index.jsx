@@ -15,7 +15,7 @@ import { proceedToNextStep, backToPrevStep, closeModal, toggleModal, generateWal
 const RegistrationModal = ({
   currentStep, goForward, goBack,
   closeModalInstance, isModalOpen, toggleModalInstance,
-  generateWalletInstance,
+  generateWalletInstance, chosenPhrase,
 }) => {
   const CurrentStepComponent = ALL_STEPS[currentStep].component;
   const currentValidate = ALL_STEPS[currentStep].validate;
@@ -23,8 +23,8 @@ const RegistrationModal = ({
   const BackButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={goBack}>Back</Button>;
   const CancelButton = () => <Button className={styles['cancel-button']} variant="raised" onClick={closeModalInstance}>Cancel</Button>;
 
-  const NextButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['next-button']]: true, [styles['next-button-disabled']]: !currentValidate() })} variant="raised" onClick={goForward}>Next</Button>;
-  const CompleteButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['complete-button']]: true, [styles['complete-button-disabled']]: !currentValidate() })} variant="raised" onClick={generateWalletInstance}>Complete</Button>;
+  const NextButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['next-button']]: true })} variant="raised" onClick={goForward}>Next</Button>;
+  const CompleteButton = () => <Button disabled={!currentValidate()} className={classnames({ [styles['complete-button']]: true })} variant="raised" onClick={generateWalletInstance}>Complete</Button>;
 
   return (
     <Modal
@@ -39,20 +39,10 @@ const RegistrationModal = ({
         <Container fluid>
           <Row>
             <Col>
-              {/* <p>
-                Please click Next, then move around your mouse randomly to generate a random
-                passphrase.
-              </p>
-
-              <p>
-                Note: After the registration is complete, your passphrase will be required for
-                logging in to your account. Please keep it in a safe place.
-              </p> */}
               <CurrentStepComponent />
             </Col>
           </Row>
         </Container>
-
       </main>
       <footer className={classnames(styles['modal-footer'], 'd-flex justify-content-between')}>
         { currentStep === 0 ? <CancelButton /> : <BackButton /> }
@@ -64,17 +54,19 @@ const RegistrationModal = ({
 
 RegistrationModal.propTypes = {
   currentStep: PropTypes.number.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  chosenPhrase: PropTypes.string.isRequired,
   goForward: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   closeModalInstance: PropTypes.func.isRequired,
   toggleModalInstance: PropTypes.func.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
   generateWalletInstance: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currentStep: state.registration.currentStep,
   isModalOpen: state.registration.modalOpen,
+  chosenPhrase: state.registration.chosenPhrase,
 });
 
 const mapDispatchToProps = (dispatch) => ({

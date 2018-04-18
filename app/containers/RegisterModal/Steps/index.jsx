@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'muicss/lib/react/button';
 
@@ -8,6 +7,8 @@ import styles from './style.scss';
 
 import { createPhrase, acceptPhrase } from '../../../actions/registration';
 import getStore from '../../../store/appStore';
+
+import generatePassPhrase from '../../../utils/generatePassPhrase';
 
 const store = getStore();
 
@@ -32,7 +33,8 @@ const mapStateToPropsStepTwo = (state) => ({
 
 const mapDispatchToPropsStepTwo = (dispatch) => ({
   generatePhr: () => {
-    dispatch(createPhrase());
+    const newPhrase = generatePassPhrase();
+    dispatch(createPhrase(newPhrase));
   },
   acceptPhr: () => {
     dispatch(acceptPhrase());
@@ -44,7 +46,7 @@ const PassPhraseStep = ({
 }) => (
   <div>
     {
-      !phraseAccepted &&
+      !phraseAccepted && !generatedPhrase.length &&
       <p>
         Click to generate passphrase: <Button className={styles['modal-black-button']} onClick={generatePhr} variant="raised">Generate</Button>
       </p>
@@ -64,7 +66,7 @@ const PassPhraseStep = ({
 
     { phraseAccepted &&
     <p>
-      Success! Proceed to complete wallet creation.
+      Success! Complete to generate wallet.
     </p> }
   </div>
 );
@@ -81,8 +83,6 @@ const ConnectedPhraseStep = connect(
   mapDispatchToPropsStepTwo
 )(PassPhraseStep);
 
-const RedirectStep = () => <Redirect to="/dashboard" />;
-
 const ALL_STEPS = [
   {
     component: StepOne,
@@ -92,6 +92,7 @@ const ALL_STEPS = [
     component: ConnectedPhraseStep,
     validate: () => {
       const currentState = store.getState();
+      console.log('Current state: ', currentState);
       return currentState.registration.phraseAccepted;
     },
   }
