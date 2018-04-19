@@ -6,6 +6,8 @@ import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import { actionCreators as registrationActions } from '../actions/registration';
 import { actionCreators as userActions } from '../actions/user';
+import { actionCreators as dashboardActions } from '../actions/dashboard';
+
 // import * as counterActions from '../actions/counter';
 // import type { counterStateType } from '../reducers/counter';
 
@@ -39,6 +41,7 @@ const configureStore = (initialState) => {
     ...routerActions,
     ...registrationActions,
     ...userActions,
+    ...dashboardActions,
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */

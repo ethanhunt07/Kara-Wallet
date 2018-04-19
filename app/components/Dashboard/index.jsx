@@ -11,8 +11,10 @@ import PropTypes from 'prop-types';
 import styles from './style.scss';
 
 import { deleteUserBranch } from '../../actions/user';
+import { toggleSendModal, toggleReceiveModal } from '../../actions/dashboard';
 
 // import DashboardTabsPanel from '../../containers/DashboardTabsPanel';
+import SendModal from '../../containers/SendModal';
 import DashboardTransactionsTable from '../DashboardTransactionsTable';
 
 const DashboardPanel = ({ children, title }) => (
@@ -45,14 +47,20 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(deleteUserBranch());
     localStorage.removeItem('walletString');
     dispatch(push('/'));
-  }
+  },
+  toggleSendModalState: () => {
+    dispatch(toggleSendModal());
+  },
+  toggleReceiveModalState: () => {
+    dispatch(toggleReceiveModal());
+  },
 });
 
 // Though not directly used, we are passing location as a property to the component
 // This is done as, when using redux, the app may not detect changes to the location unless
 // The location is passed as a property... and hence the view gets re-rendered (route-change)
 // when the location is changed.
-const Dashboard = ({ transactionsList, logout, location, walletAddress }) => ( // eslint-disable-line 
+const Dashboard = ({ transactionsList, logout, location, walletAddress, toggleSendModalState, toggleReceiveModalState }) => ( // eslint-disable-line 
   <div className={styles['page-container']}>
     <Container>
       <header
@@ -94,16 +102,18 @@ const Dashboard = ({ transactionsList, logout, location, walletAddress }) => ( /
         <nav className="d-flex justify-content-center">
           <Button
             className={classnames(styles['nav-button'], styles['send-button'])}
+            onClick={toggleSendModalState}
             variant="raised"
           >
             Send
           </Button>
-          <Button className={styles['nav-button']} variant="raised">Receive Kara</Button>
+          <Button className={styles['nav-button']} onClick={toggleReceiveModalState} variant="raised">Receive Kara</Button>
           <Button className={styles['nav-button']} variant="raised" onClick={logout}>Logout</Button>
         </nav>
       </Panel>
       {/* <DashboardTabsPanel /> */}
       <DashboardTransactionsTable transactionsList={transactionsList} />
+      <SendModal />
     </Container>
   </div>
 );

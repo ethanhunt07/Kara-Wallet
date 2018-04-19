@@ -1,0 +1,31 @@
+.cancel-button {
+  background-color: #fff !important;
+  color: #111 !important;
+
+  &:hover {
+    background-color: #222 !important;
+    color: #ddd !important;
+  }
+}
+
+.send-button {
+  background-color: #333 !important;
+  color: #eee !important;
+
+  &:hover {
+    background-color: #111 !important;
+    color: #fff !important;
+  }
+}
+
+.send-form-component {
+  padding-top: 1.5rem !important;
+}
+
+.send-form {
+  min-height: 180px;
+}
+
+.form-buttons {
+  text-align: center;
+}
