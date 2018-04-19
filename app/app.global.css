@@ -5,6 +5,7 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import "~font-awesome/css/font-awesome.css";
 @import "~muicss/dist/css/mui.min.css";
+@import "~react-toggle/style.css";
 
 body {
   position: relative;
