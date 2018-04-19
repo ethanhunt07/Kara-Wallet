@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { ipcRenderer } from 'electron';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -8,7 +9,15 @@ import { history } from './store/configureStore';
 import getStore from './store/appStore';
 import './app.global.css';
 
+import { toggleClientExec } from './actions/dashboard';
+
 const store = getStore();
+
+ipcRenderer.on('full-node-channel', (event, arg) => {
+  if (arg === 'TOGGLE') {
+    store.dispatch(toggleClientExec());
+  }
+});
 
 const alertOptions = {
   position: 'bottom center',

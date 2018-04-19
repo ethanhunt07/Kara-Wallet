@@ -10,8 +10,19 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import { spawn as processExec } from 'child_process';
+// import { join } from 'fs';
 import MenuBuilder from './menu';
+
+const { join } = require('path');
+
+
+const binariesDirectory = join(__dirname, '..', 'binaries');
+const karaBinaryLocation = join(binariesDirectory, 'kara-binary');
+const configLocation = join(binariesDirectory, 'config.json');
+
+let karaProcessRef = null;
 
 let mainWindow = null;
 
@@ -83,4 +94,21 @@ app.on('ready', async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+});
+
+ipcMain.on('full-node-channel', (event, arg) => {
+  console.log(event, arg);
+  if (arg === 'START') {
+    try {
+      karaProcessRef = processExec(`${karaBinaryLocation}`, [configLocation], { cwd: binariesDirectory });
+      karaProcessRef.stdout.pipe(process.stdout);
+      karaProcessRef.stderr.pipe(process.stderr);
+      event.sender.send('connection-status-channel', 'OPENED');
+    } catch (e) {
+      console.error(e);
+    }
+  } else if ((arg === 'STOP') && (karaProcessRef)) {
+    karaProcessRef.kill();
+    event.sender.send('connection-status-channel', 'CLOSED');
+  }
 });
