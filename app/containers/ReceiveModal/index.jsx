@@ -2,50 +2,38 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Modal, Container, Row, Col } from 'reactstrap';
+import QRCode from 'qrcode.react';
 import Button from 'muicss/lib/react/button';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import SendForm from '../../components/SendForm';
-
 import styles from './style.scss';
 
-import { updateSendReceiveAddress, updateSendTransactionAmount, toggleSendModal } from '../../actions/dashboard';
+import { toggleReceiveModal } from '../../actions/dashboard';
 
 const mapStateToProps = (state) => ({
-  sendModalOpen: state.dashboard.sendModalOpen,
-  recepientAddress: state.dashboard.sendForm.recepientAddress,
-  transactionAmount: state.dashboard.sendForm.transactionAmount,
+  receiveModalOpen: state.dashboard.receiveModalOpen,
+  receiverAddress: state.user.wallet.address,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   toggleModalState: (evt) => {
     evt.preventDefault();
-    dispatch(toggleSendModal());
+    dispatch(toggleReceiveModal());
   },
-  onReceiveAddressChange: (evt, newReceiveAddress) => {
-    evt.preventDefault();
-    dispatch(updateSendReceiveAddress(newReceiveAddress));
-  },
-  onReceiveTransactionAmount: (evt, newTransactionAmount) => {
-    evt.preventDefault();
-    dispatch(updateSendTransactionAmount(newTransactionAmount));
-  }
 });
 
 class SendModal extends Component {
   render() {
     const {
-      sendModalOpen, toggleModalState,
-      recepientAddress, transactionAmount,
-      onReceiveAddressChange, onReceiveTransactionAmount
+      receiveModalOpen, toggleModalState, receiverAddress
     } = this.props;
 
     return (
       <Modal
-        isOpen={sendModalOpen}
+        isOpen={receiveModalOpen}
         toggle={toggleModalState}
-        className={styles['send-modal']}
+        className={styles['receive-modal']}
       >
         <header className={styles['modal-header']}>
           <h3>Send</h3>
@@ -54,22 +42,27 @@ class SendModal extends Component {
         <main className={styles['modal-body']}>
           <Container fluid>
             <Row>
-              <Col>
-                <SendForm
+              <Col className={styles['address-column']}>
+                {/* <SendForm
                   transactionAmount={transactionAmount}
                   recepientAddress={recepientAddress}
                   toggleModalState={toggleModalState}
                   send={() => {}}
                   onAddressChange={onReceiveAddressChange}
                   onAmountChange={onReceiveTransactionAmount}
-                />
+                /> */}
+                <h4 className={styles['address-title']}>Address</h4>
+
+                <p className={styles['greyed-address-section']}>{ receiverAddress }</p>
+
+                <QRCode size={384} value={receiverAddress} />
               </Col>
             </Row>
           </Container>
         </main>
 
         <footer className={classnames(styles['modal-footer'], 'd-flex justify-content-between')}>
-          <Button className={styles['cancel-button']} onClick={toggleModalState} variant="raised">Cancel</Button>;
+          <Button className={styles['cancel-button']} onClick={toggleModalState} variant="raised">Cancel</Button>
           <Button className={classnames(styles['send-button'], 'ml-auto')} variant="raised">Send</Button>
         </footer>
       </Modal>
@@ -78,12 +71,9 @@ class SendModal extends Component {
 }
 
 SendModal.propTypes = {
-  sendModalOpen: PropTypes.bool.isRequired,
+  receiveModalOpen: PropTypes.bool.isRequired,
   toggleModalState: PropTypes.func.isRequired,
-  recepientAddress: PropTypes.string.isRequired,
-  transactionAmount: PropTypes.string.isRequired,
-  onReceiveAddressChange: PropTypes.func.isRequired,
-  onReceiveTransactionAmount: PropTypes.func.isRequired,
+  receiverAddress: PropTypes.string.isRequired,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SendModal));

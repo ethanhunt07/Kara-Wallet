@@ -1,0 +1,70 @@
+.receive-modal {
+  border-radius: 0.1rem !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  // width: 700px !important;
+  max-width: 900px !important;
+}
+
+.receive-modal > * {
+  border: none !important;
+}
+
+.modal-header {
+  background-color: #111;
+  color: #eee !important;
+  line-height: 2;
+  padding: 0.5rem 1.9rem;
+}
+
+.modal-header h3 {
+  color: #eee;
+  letter-spacing: 2px;
+}
+
+.modal-body {
+  padding: 1rem;
+  line-height: 2;
+  color: #333;
+  font-size: 1rem;
+}
+
+.address-column {
+  text-align: center;
+}
+
+.address-title {
+  color: #777;
+  font-size: 1.1rem;
+}
+
+.greyed-address-section {
+  background-color: #ccc;
+  color: #111;
+}
+
+.modal-body p {
+  font-size: 1rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.9rem;
+  background-color: #ddd;
+  border-top: 1px solid grey;
+}
+
+.cancel-button {
+  background-color: #bbb !important;
+  color: #666 !important;
+}
+
+.receive-button {
+  background-color: #222 !important;
+  color: #eee !important;
+  transition: all 1s ease;
+
+  &:hover {
+    background-color: #111 !important;
+    color: #fff !important;
+  }
+}
