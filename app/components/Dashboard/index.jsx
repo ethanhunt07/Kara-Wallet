@@ -105,7 +105,7 @@ class Dashboard extends Component {
             className={classnames(styles['dashboard-header'], 'd-flex justify-content-center align-items-center')}
           >
             <nav className="d-flex align-items-center">
-              <label htmlFor="toggle">
+              <label className={styles['full-node-status-label']} htmlFor="toggle">
                 <span>Full Node Status: { fullNodeRunning ? 'Running' : 'Stopped' }</span>
               </label>
               <Toggle
